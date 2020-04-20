@@ -14,10 +14,10 @@ public class CommonReturnType {
 
     //定义一个通用的创建方法
     public static CommonReturnType create(Object result){
-        return CommonReturnType.create( result,"sucess");
+        return CommonReturnType.create( result,"success");
     }
 
-    private static CommonReturnType create(Object result, String status) {
+    public static CommonReturnType create(Object result, String status) {
         CommonReturnType commonReturnType=new CommonReturnType();
         commonReturnType.setData(result);
         commonReturnType.setStatus(status);
