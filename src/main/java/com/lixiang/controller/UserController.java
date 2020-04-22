@@ -7,7 +7,6 @@ import com.lixiang.error.EmBusinessError;
 import com.lixiang.response.CommonReturnType;
 import com.lixiang.service.UserService;
 import com.lixiang.service.model.UserModel;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,7 +79,6 @@ public class UserController extends BaseController{
         userModel.setEncrptPassword(this.EncodeByMd5(password));
         userService.register(userModel);
         return CommonReturnType.create(null);
-
     }
 
     public String EncodeByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {

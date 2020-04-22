@@ -13,34 +13,31 @@
   <sql id="Base_Column_List">
     id, name, gender, age, telphone, register_mode, third_party_id
   </sql>
-
   <select id="selectByTelphone"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user_info
     where telphone = #{telphone,jdbcType=VARCHAR}
   </select>
-
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_info
     where id = #{id,jdbcType=INTEGER}
   </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lixiang.dataobject.UserDO" useGeneratedKeys = "true" keyProperty = "rpaId">
+  <insert id="insert" parameterType="com.lixiang.dataobject.UserDO"  useGeneratedKeys="true" keyProperty="id">
     insert into user_info (id, name, gender, 
-      age, telphone, register_mode,
+      age, telphone, register_mode, 
       third_party_id)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
-      #{age,jdbcType=INTEGER}, #{telphone,jdbcType=VARCHAR}, #{registerMode,jdbcType=VARCHAR},
+      #{age,jdbcType=INTEGER}, #{telphone,jdbcType=VARCHAR}, #{registerMode,jdbcType=VARCHAR}, 
       #{thirdPartyId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" useGeneratedKeys = "true" keyProperty = "id" parameterType="com.lixiang.dataobject.UserDO" >
+  <insert id="insertSelective" parameterType="com.lixiang.dataobject.UserDO"  useGeneratedKeys="true" keyProperty="id">
     insert into user_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

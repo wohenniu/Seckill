@@ -9,10 +9,13 @@ import com.lixiang.error.BussinessException;
 import com.lixiang.error.EmBusinessError;
 import com.lixiang.service.UserService;
 import com.lixiang.service.model.UserModel;
+import com.lixiang.validator.ValidationResult;
+import com.lixiang.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,6 +23,8 @@ public class UserServiceImpl implements UserService {
     private UserDOMapper userDOMapper;
     @Autowired
     private UserPasswordDOMapper userPasswordDOMapper;
+    @Autowired
+    private ValidatorImpl validator;
     @Override
     public UserModel getUserById(Integer id) {
         //调用userdaomapper获取到对应的用户dataobject
@@ -37,12 +42,17 @@ public class UserServiceImpl implements UserService {
         if(userModel==null){
             throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if(StringUtils.isEmpty(userModel.getName())
-                || userModel.getGender()==null
-                || userModel.getAge()==null
-                || StringUtils.isEmpty(userModel.getTelphone())){
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        if(StringUtils.isEmpty(userModel.getName())
+//                || userModel.getGender()==null
+//                || userModel.getAge()==null
+//                || StringUtils.isEmpty(userModel.getTelphone())){
+//            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
+        ValidationResult result = validator.validate(userModel);
+        if(result.isHasErrors()){
+            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,result.getErrMsg());
         }
+
 
         //实现model->dataobject方法
          UserDO userDO=convertFromModel(userModel);
@@ -63,8 +73,8 @@ public class UserServiceImpl implements UserService {
         UserPasswordDO userPasswordDO=userPasswordDOMapper.selectByUserId(userDO.getId());
         UserModel userModel=convertFromDataObject(userDO,userPasswordDO);
         //比对用户信息内加密的密码是否和传输进来的密码想匹配
-        if(StringUtils.equals(encrptPassword,userModel.getEncrptPassword())) {
-            throw new BussinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        if(!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())) {
+            throw new BussinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
         return userModel;
     }

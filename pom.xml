@@ -32,6 +32,15 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+
+    <!--参数校验-->
+    <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.1.0.Final</version>
+    </dependency>
+
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -110,8 +119,8 @@
           <configuration>
             <!--允许移动生成的文件 -->
             <verbose>true </verbose>
-            <!--允许覆盖生成的文件 -->
-            <overwrite>true</overwrite>
+            <!--不允许覆盖生成的文件 -->
+            <overwrite>false</overwrite>
             <configurationFile>
               <!-- C:\Users\hasee\IdeaProjects\Seckill\src\main\resources\mybatis-generator.xml -->
               src/main/resources/mybatis-generator.xml
